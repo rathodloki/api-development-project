@@ -20,20 +20,24 @@ def find_user_index(id):
         if user["id"] == id:
             return index
 
+# temp request
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
+#get all users
 @app.get("/users")
 def get_users():
     return tempdb
 
+#create user request
 @app.post("/users",status_code=status.HTTP_201_CREATED)
 def add_user(data: Users):
     id=len(tempdb)
     tempdb.append({"id":id+1, "name": data.name, "occupation": data.occupation, "age": data.age})
     return {"id":id+1, "name": data.name, "occupation": data.occupation, "age": data.age}
 
+#get specific user
 @app.get("/users/{id}")
 def get_user(id: int, response: Response):
     user=find_user(id)
@@ -41,6 +45,7 @@ def get_user(id: int, response: Response):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="User not found")
     return user    
 
+#delete user
 @app.delete("/users/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def del_user(id: int, response: Response):
     index=find_user_index(id)
@@ -49,6 +54,7 @@ def del_user(id: int, response: Response):
     tempdb.pop(index)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
+#update user
 @app.put("/users/{id}",status_code=status.HTTP_201_CREATED)
 def update_user(id:int,users: Users, response: Response):
     index=find_user_index(id)
