@@ -77,7 +77,10 @@ def get_user(id: int, response: Response):
 @app.delete("/users/{id}",status_code=status.HTTP_204_NO_CONTENT)
 def del_user(id: int, response: Response):
     #index=find_user_index(id)
-    cur.execute("DELETE FROM users where id=%s returning *;"%str(id))
+    if(id == 0):
+        cur.execute("DELETE FROM users returning *;")
+    else:
+        cur.execute("DELETE FROM users where id=%s returning *;"%str(id))
     result=cur.fetchone()
     if result == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="User not found")
