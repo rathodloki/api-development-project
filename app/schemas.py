@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 class UsersBase(BaseModel):
@@ -7,12 +7,14 @@ class UsersBase(BaseModel):
     age: int
 
 class CreateUser(UsersBase):
+    email: EmailStr
+    password: str
     pass
 
 class UpdateUser(UsersBase):
     pass
 
 class ResponseUser(UsersBase):
-    id: int
+    email: EmailStr
     class Config:
         orm_mode = True
